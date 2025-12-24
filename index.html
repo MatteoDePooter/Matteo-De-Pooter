@@ -7,13 +7,23 @@
   <link href="dist/output.css" rel="stylesheet">
   <style>
     :root { 
-      --radius: 280px; 
+      /* Dynamische straal: schaalt vloeiend tussen mobiel en desktop */
+      --radius: clamp(160px, 25vw, 280px); 
+    }
+
+    /* Achtergrond animatie/blobs */
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: -10;
+      pointer-events: none;
     }
 
     #wheel-container {
       position: relative;
       width: 100%;
-      height: 550px;
+      height: clamp(380px, 60vh, 550px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -21,6 +31,7 @@
       mask-image: linear-gradient(to bottom, black 65%, transparent 95%);
       -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 95%);
       cursor: grab;
+      overflow: hidden;
     }
 
     #wheel-container:active { cursor: grabbing; }
@@ -35,32 +46,55 @@
 
     .center-info {
       position: absolute;
-      top: 70%;
+      top: 68%;
       transform: translateY(-50%);
       text-align: center;
       z-index: 50;
       width: 100%;
       pointer-events: none;
+      padding: 0 1rem;
     }
 
-    #info-desc { font-size: 1.1rem; color: #6366f1; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; margin-bottom: 5px; display: block; }
-    #info-title { font-size: 3.5rem; font-weight: 950; color: #0f172a; margin: 0; letter-spacing: -0.05em; line-height: 1; }
-    #info-detail { font-size: 1.1rem; color: #64748b; margin-top: 5px; font-weight: 500; }
+    /* Typografie schaalt mee met schermgrootte */
+    #info-desc { 
+      font-size: clamp(0.75rem, 2vw, 1.1rem); 
+      color: #6366f1; 
+      font-weight: 900; 
+      text-transform: uppercase; 
+      letter-spacing: 0.3em; 
+      margin-bottom: 5px; 
+      display: block; 
+    }
+    #info-title { 
+      font-size: clamp(2rem, 6vw, 3.5rem); 
+      font-weight: 950; 
+      color: #0f172a; 
+      margin: 0; 
+      letter-spacing: -0.05em; 
+      line-height: 1; 
+    }
+    #info-detail { 
+      font-size: clamp(0.85rem, 2vw, 1.1rem); 
+      color: #64748b; 
+      margin-top: 5px; 
+      font-weight: 500; 
+    }
 
     .week-item {
       position: absolute;
       left: 0; top: 0;
-      width: 60px; height: 60px;
-      margin-left: -30px;
-      margin-top: -30px;
+      width: clamp(50px, 8vw, 60px); 
+      height: clamp(50px, 8vw, 60px);
+      margin-left: calc(clamp(50px, 8vw, 60px) / -2);
+      margin-top: calc(clamp(50px, 8vw, 60px) / -2);
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
     .week-circle {
-      width: 60px;
-      height: 60px;
+      width: 100%;
+      height: 100%;
       background: white;
       border: 2px solid #e2e8f0;
       border-radius: 50%;
@@ -70,17 +104,91 @@
       font-weight: 800;
       color: #94a3b8;
       text-decoration: none;
-      transition: border 0.4s, background 0.4s, color 0.4s, transform 0.4s;
+      transition: all 0.4s;
+      font-size: clamp(0.8rem, 2vw, 1rem);
     }
 
     .week-circle.active {
       border-color: #6366f1;
       background: #6366f1;
       color: white;
-      transform: scale(1.4);
+      transform: scale(1.3);
       box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
     }
+
+    #vorigevolgende {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem; /* Ruimte tussen knoppen op mobiel */
+      width: 20em;
+      padding: 2em;
+    }
+
+    #knop{
+      width: 5em;
+      height: 5em;
     
+    }
+
+    #knopvorige{
+      width: 20em;
+      height: 5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+      padding: 1em;
+
+    }
+
+     #knopvolgende{
+      width: 20em;
+      height: 5em;
+      display: flex;
+      flex-direction: wrap;
+      align-items: center;
+      justify-content: space-around;
+      gap: 0px;
+      padding: 1em;
+
+    }
+
+    .nav-btn {
+      width: 140px; /* Vaste breedte op mobiel */
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 9999px;
+      background-color: #0f172a; /* slate-900 */
+      color: white;
+      font-weight: 700;
+      font-size: 0.75rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .nav-btn:hover { background-color: #6366f1; }
+    .nav-btn:active { transform: scale(0.95); }
+
+    nav{
+      position: absolute;
+    }
+
+    /* Desktop aanpassingen */
+    @media (min-width: 768px) {
+      #vorigevolgende {
+        gap: 8rem; /* De vertrouwde grote ruimte op PC */
+      }
+      .nav-btn {
+        width: 180px; /* Iets breder op PC */
+        height: 60px;
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 
@@ -93,19 +201,19 @@
   </div>
 
   <nav class="sticky top-0 z-[100] bg-white/60 backdrop-blur-xl border-b border-white/20">
-    <div class="max-w-5xl mx-auto px-8 h-20 flex items-center justify-between">
-      <span class="text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent italic">
-        MATTEO DE POOTER <span class="text-slate-400 font-light ml-2 not-italic text-sm">1GDM1</span>
+    <div class="max-w-5xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
+      <span class="text-lg md:text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent italic">
+        MATTEO <span class="hidden sm:inline">DE POOTER</span> <span class="text-slate-400 font-light ml-2 not-italic text-xs md:text-sm">1GDM1</span>
       </span>
-      <div class="flex items-center gap-10 text-sm font-bold tracking-widest uppercase">
+      <div class="flex items-center gap-6 md:gap-10 text-[10px] md:text-sm font-bold tracking-widest uppercase">
         <a href="index.html" class="text-indigo-600 border-b-2 border-indigo-600 pb-1">Home</a>
         <a href="reports.html" class="text-slate-400 hover:text-indigo-600 transition">Reports</a>
       </div>
     </div>
   </nav>
 
-  <header class="pt-16 pb-2 text-center">
-    <h1 class="text-7xl md:text-8xl font-black tracking-tighter uppercase leading-[0.85] mb-4">
+  <header class="pt-10 md:pt-16 pb-2 text-center px-4">
+    <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter uppercase leading-[0.85] mb-4">
       Weekly<br><span class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">Journal.</span>
     </h1>
   </header>
@@ -158,38 +266,26 @@
       </div>
     </div>
 
-    <style>
-      #vorigevolgende{
-        gap: 8em;
-      }
-
-      #knop{
-        width: 10em;
-        padding: 1em;
-        justify-content: space-between;
-      }
-    </style>
-
-    <div id="vorigevolgende" class="flex gap-16 mt-4 mb-24 z-[110]">
-      <button id="knop" onclick="navigate(1)" class="px-12 py-5 bg-slate-900 text-white rounded-full font-bold shadow-2xl hover:bg-indigo-600 transition-all active:scale-95 flex items-center gap-3">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    <div id="vorigevolgende" class="flex flex-row gap-4 md:gap-32 mt-4 mb-24 z-[110] px-6 w-full justify-center">
+      <button id="knopvorige" onclick="navigate(1)" class="flex-1 max-w-[160px] md:max-w-none md:px-12 py-4 md:py-5 bg-slate-900 text-white rounded-full font-bold shadow-2xl hover:bg-indigo-600 transition-all active:scale-95 flex items-center justify-center gap-2 md:gap-3 text-xs md:text-base">
+        <svg id="knop" class="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         VORIGE
       </button>
-      <button id="knop" onclick="navigate(-1)" class="px-12 py-5 bg-slate-900 text-white rounded-full font-bold shadow-2xl hover:bg-indigo-600 transition-all active:scale-95 flex items-center gap-3">
+      <button id="knopvolgende" onclick="navigate(-1)" class="flex-1 max-w-[160px] md:max-w-none md:px-12 py-4 md:py-5 bg-slate-900 text-white rounded-full font-bold shadow-2xl hover:bg-indigo-600 transition-all active:scale-95 flex items-center justify-center gap-2 md:gap-3 text-xs md:text-base">
         VOLGENDE
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <svg id="knop" class="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
     </div>
   </main>
 
-  <footer class="py-20 bg-slate-900 text-white relative">
+  <footer class="py-12 md:py-20 bg-slate-900 text-white relative">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
     <div class="max-w-4xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-10">
-      <div>
-        <p class="text-2xl font-black italic uppercase">Matteo De Pooter</p>
-        <p class="text-slate-400">Student Grafische en Digitale Media</p>
+      <div class="text-center md:text-left">
+        <p class="text-xl md:text-2xl font-black italic uppercase">Matteo De Pooter</p>
+        <p class="text-slate-400 text-sm md:text-base">Student Grafische en Digitale Media</p>
       </div>
-      <a href="https://github.com/MatteoDePooter/Matteo-De-Pooter" target="_blank" class="px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-indigo-500 transition-all shadow-xl">GITHUB REPO</a>
+      <a href="https://github.com/MatteoDePooter/Matteo-De-Pooter" target="_blank" class="px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-indigo-500 hover:text-white transition-all shadow-xl text-sm md:text-base">GITHUB REPO</a>
     </div>
   </footer>
 
@@ -202,12 +298,10 @@
     let isDragging = false;
     let startX = 0;
 
-    // Navigatie via knoppen
     function navigate(direction) {
       rotateTo(currentRotation + (direction * 30));
     }
 
-    // Algemene rotatie functie
     function rotateTo(deg) {
       currentRotation = deg;
       wheel.style.transform = `rotate(${currentRotation}deg)`;
@@ -232,40 +326,33 @@
       });
     }
 
-    // Slepen logica
+    // Mouse Events
     container.addEventListener('mousedown', (e) => {
       isDragging = true;
       startX = e.pageX;
-      wheel.style.transition = 'none'; // Stop animatie tijdens slepen
+      wheel.style.transition = 'none';
     });
 
     window.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
       const x = e.pageX;
-      const walk = (x - startX) * 0.2; // Gevoeligheid instellen
+      const walk = (x - startX) * 0.2;
       wheel.style.transform = `rotate(${currentRotation + walk}deg)`;
-      
-      // Update ook de individuele cirkels zodat nummers recht blijven tijdens slepen
       circles.forEach((circle, i) => {
         const initialAngle = i * 30;
         circle.style.transform = `rotate(${-initialAngle - (currentRotation + walk)}deg)`;
       });
     });
 
-    window.addEventListener('mouseup', (e) => {
+    window.addEventListener('mouseup', () => {
       if (!isDragging) return;
       isDragging = false;
-      const x = e.pageX;
-      const walk = (x - startX) * 0.2;
-      currentRotation += walk;
-      
-      // Snap naar dichtstbijzijnde 30 graden
-      currentRotation = Math.round(currentRotation / 30) * 30;
+      currentRotation = Math.round((currentRotation + (event.pageX - startX) * 0.2) / 30) * 30;
       wheel.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
       rotateTo(currentRotation);
     });
 
-    // Touch support voor mobiel
+    // Touch Support
     container.addEventListener('touchstart', (e) => {
       isDragging = true;
       startX = e.touches[0].pageX;
@@ -277,34 +364,27 @@
       const x = e.touches[0].pageX;
       const walk = (x - startX) * 0.2;
       wheel.style.transform = `rotate(${currentRotation + walk}deg)`;
-      updateActiveState(); // Optioneel: live update tijdens touch
+      updateActiveState();
     });
 
     window.addEventListener('touchend', () => {
+      if (!isDragging) return;
       isDragging = false;
       currentRotation = Math.round(currentRotation / 30) * 30;
       wheel.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
       rotateTo(currentRotation);
     });
 
-    // Klikken op een specifieke week
     circles.forEach(circle => {
       circle.addEventListener('click', (e) => {
         const index = parseInt(circle.getAttribute('data-index'));
-        const activeIndex = Math.round((currentRotation / -30) % 12);
-        
-        // Als de week al actief is, laat de link werken. Zo niet, draai er eerst naartoe.
-        if (circle.classList.contains('active')) {
-           // Link wordt gevolgd
-        } else {
+        if (!circle.classList.contains('active')) {
            e.preventDefault();
-           let targetRotation = index * -30;
-           rotateTo(targetRotation);
+           rotateTo(index * -30);
         }
       });
     });
 
-    // Initialiseer nummers op de juiste plek
     updateActiveState();
   </script>
 </body>
