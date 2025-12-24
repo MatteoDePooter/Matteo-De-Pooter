@@ -189,6 +189,58 @@
         font-size: 0.9rem;
       }
     }
+
+    @media (max-width: 640px) {
+    #wheel-container {
+      height: 450px;
+      mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    }
+    #wheel {
+      top: 85%; /* Wiel iets lager op mobiel voor meer focus op de tekst */
+    }
+    :root {
+      --radius: 170px; /* Kleinere cirkel voor mobiel */
+    }
+  }
+
+  /* Voorkom scrollen op de volledige pagina */
+html, body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Zorg dat de main content de rest van het scherm vult zonder te overstroomen */
+main {
+  height: calc(100vh - 80px - 100px); /* 100vh min nav (80px) en min footer/header ruimte */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+#wheel-container {
+  /* Gebruik flex-grow om de beschikbare ruimte te vullen */
+  flex-grow: 1;
+  width: 100%;
+  max-height: 60vh; 
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Pas de radius aan op basis van schermhoogte zodat het wiel nooit van het scherm valt */
+:root { 
+  --radius: min(25vh, 250px); 
+}
+
+@media (max-width: 640px) {
+  :root { --radius: 150px; }
+  #info-title { font-size: 2.5rem; }
+}
+
+
   </style>
 </head>
 
@@ -200,25 +252,27 @@
     <div class="absolute -bottom-[10%] left-[20%] w-[50%] h-[30%] rounded-full bg-pink-200/30 blur-[120px]"></div>
   </div>
 
-  <nav class="sticky top-0 z-[100] bg-white/60 backdrop-blur-xl border-b border-white/20">
-    <div class="max-w-5xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
+  <nav class="sticky top-0 z-[100] bg-white/60 backdrop-blur-xl border-b border-slate-200/50">
+  <div class="max-w-6xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
+    <a href="index.html" class="flex items-center">
       <span class="text-lg md:text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent italic">
-        MATTEO <span class="hidden sm:inline">DE POOTER</span> <span class="text-slate-400 font-light ml-2 not-italic text-xs md:text-sm">1GDM1</span>
+        MATTEO <span class="text-indigo-600">DE POOTER</span> <span class="text-slate-400 font-light ml-2 not-italic text-xs md:text-sm">1GDM1</span>
       </span>
-      <div class="flex items-center gap-6 md:gap-10 text-[10px] md:text-sm font-bold tracking-widest uppercase">
-        <a href="index.html" class="text-indigo-600 border-b-2 border-indigo-600 pb-1">Home</a>
-        <a href="reports.html" class="text-slate-400 hover:text-indigo-600 transition">Reports</a>
-      </div>
+    </a>
+    <div class="flex items-center gap-6 md:gap-10 text-[10px] md:text-sm font-bold tracking-widest uppercase">
+      <a href="index.html" class="text-indigo-600 border-b-2 border-indigo-600 pb-1">Home</a>
+      <a href="reports.html" class="text-slate-400 hover:text-indigo-600 transition">Reports</a>
     </div>
-  </nav>
+  </div>
+</nav>
 
-  <header class="pt-10 md:pt-16 pb-2 text-center px-4">
-    <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter uppercase leading-[0.85] mb-4">
+  <header class="shrink-0 pt-6 pb-2 text-center px-4">
+    <h1 class="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-none">
       Weekly<br><span class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">Journal.</span>
     </h1>
   </header>
 
-  <main class="flex-grow flex flex-col items-center">
+  <main class="flex-grow">
     <div id="wheel-container">
       <div class="center-info">
         <span id="info-desc">WEEK 01</span>
@@ -266,7 +320,7 @@
       </div>
     </div>
 
-    <div id="vorigevolgende" class="flex flex-row gap-4 md:gap-32 mt-4 mb-24 z-[110] px-6 w-full justify-center">
+    <div id="vorigevolgende" class="flex flex-row gap-4 mb-8">
       <button id="knopvorige" onclick="navigate(1)" class="flex-1 max-w-[160px] md:max-w-none md:px-12 py-4 md:py-5 bg-slate-900 text-white rounded-full font-bold shadow-2xl hover:bg-indigo-600 transition-all active:scale-95 flex items-center justify-center gap-2 md:gap-3 text-xs md:text-base">
         <svg id="knop" class="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         VORIGE
@@ -278,14 +332,10 @@
     </div>
   </main>
 
-  <footer class="py-12 md:py-20 bg-slate-900 text-white relative">
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
-    <div class="max-w-4xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-10">
-      <div class="text-center md:text-left">
-        <p class="text-xl md:text-2xl font-black italic uppercase">Matteo De Pooter</p>
-        <p class="text-slate-400 text-sm md:text-base">Student Grafische en Digitale Media</p>
-      </div>
-      <a href="https://github.com/MatteoDePooter/Matteo-De-Pooter" target="_blank" class="px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-indigo-500 hover:text-white transition-all shadow-xl text-sm md:text-base">GITHUB REPO</a>
+ <footer class="shrink-0 py-4 bg-slate-900 text-white">
+    <div class="max-w-4xl mx-auto px-8 flex justify-between items-center">
+      <p class="text-[10px] uppercase font-bold tracking-widest">© 2025 Matteo De Pooter</p>
+      <a href="https://github.com/MatteoDePooter" class="text-[10px] font-bold underline">GITHUB</a>
     </div>
   </footer>
 
