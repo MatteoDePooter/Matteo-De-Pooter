@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | Matteo De Pooter</title>
+  <link href="dist/output.css" rel="stylesheet">
+  <style>
+    :root { 
+      --radius: 280px; 
+    }
+
+    #wheel-container {
+      position: relative;
+      width: 100%;
+      height: 550px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      mask-image: linear-gradient(to bottom, black 65%, transparent 95%);
+      -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 95%);
+      cursor: grab;
+    }
+
+    #wheel-container:active { cursor: grabbing; }
+
+    #wheel {
+      position: absolute;
+      top: 80%; 
+      width: 0; height: 0;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+
+    .center-info {
+      position: absolute;
+      top: 70%;
+      transform: translateY(-50%);
+      text-align: center;
+      z-index: 50;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    #info-desc { font-size: 1.1rem; color: #6366f1; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; margin-bottom: 5px; display: block; }
+    #info-title { font-size: 3.5rem; font-weight: 950; color: #0f172a; margin: 0; letter-spacing: -0.05em; line-height: 1; }
+    #info-detail { font-size: 1.1rem; color: #64748b; margin-top: 5px; font-weight: 500; }
+
+    .week-item {
+      position: absolute;
+      left: 0; top: 0;
+      width: 60px; height: 60px;
+      margin-left: -30px;
+      margin-top: -30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .week-circle {
+      width: 60px;
+      height: 60px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #94a3b8;
+      text-decoration: none;
+      transition: border 0.4s, background 0.4s, color 0.4s, transform 0.4s;
+    }
+
+    .week-circle.active {
+      border-color: #6366f1;
+      background: #6366f1;
+      color: white;
+      transform: scale(1.4);
+      box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+    }
+    
+  </style>
+</head>
+
+<body class="bg-white text-slate-900 min-h-screen font-sans overflow-x-hidden flex flex-col">
+
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-purple-200/50 blur-[120px]"></div>
+    <div class="absolute top-[40%] -right-[5%] w-[30%] h-[50%] rounded-full bg-indigo-200/40 blur-[100px]"></div>
+    <div class="absolute -bottom-[10%] left-[20%] w-[50%] h-[30%] rounded-full bg-pink-200/30 blur-[120px]"></div>
+  </div>
+
+  <nav class="sticky top-0 z-[100] bg-white/60 backdrop-blur-xl border-b border-white/20">
+    <div class="max-w-5xl mx-auto px-8 h-20 flex items-center justify-between">
+      <span class="text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent italic">
+        MATTEO DE POOTER <span class="text-slate-400 font-light ml-2 not-italic text-sm">1GDM1</span>
+      </span>
+      <div class="flex items-center gap-10 text-sm font-bold tracking-widest uppercase">
+        <a href="index.html" class="text-indigo-600 border-b-2 border-indigo-600 pb-1">Home</a>
+        <a href="reports.html" class="text-slate-400 hover:text-indigo-600 transition">Reports</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="pt-16 pb-2 text-center">
+    <h1 class="text-7xl md:text-8xl font-black tracking-tighter uppercase leading-[0.85] mb-4">
+      Weekly<br><span class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">Journal.</span>
+    </h1>
+  </header>
+
+  <main class="flex-grow flex flex-col items-center">
+    <div id="wheel-container">
+      <div class="center-info">
+        <span id="info-desc">WEEK 01</span>
+        <h3 id="info-title">De Opstart</h3>
+        <p id="info-detail">NPM, Terminal & Workflow</p>
+      </div>
+
+      <div id="wheel">
+        <div class="week-item" style="transform: rotate(0deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week1.html" class="week-circle active" data-index="0" data-title="De Opstart" data-week="01" data-detail="NPM, Terminal & Workflow">01</a>
+        </div>
+        <div class="week-item" style="transform: rotate(30deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week2.html" class="week-circle" data-index="1" data-title="Styling & Grid" data-week="02" data-detail="Advanced Layouts">02</a>
+        </div>
+        <div class="week-item" style="transform: rotate(60deg) translateY(calc(-1 * var(--radius)))">
+          <a href="Week3.html" class="week-circle" data-index="2" data-title="Prototyping" data-week="03" data-detail="UX Design Patterns">03</a>
+        </div>
+        <div class="week-item" style="transform: rotate(90deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week4.html" class="week-circle" data-index="3" data-title="Design Systems" data-week="04" data-detail="UI Components">04</a>
+        </div>
+        <div class="week-item" style="transform: rotate(120deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week5.html" class="week-circle" data-index="4" data-title="Responsiveness" data-week="05" data-detail="Adaptive Design">05</a>
+        </div>
+        <div class="week-item" style="transform: rotate(150deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week6.html" class="week-circle" data-index="5" data-title="Mid-term" data-week="06" data-detail="Project Review">06</a>
+        </div>
+        <div class="week-item" style="transform: rotate(180deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week7.html" class="week-circle" data-index="6" data-title="JS Intro" data-week="07" data-detail="Logic & Functions">07</a>
+        </div>
+        <div class="week-item" style="transform: rotate(210deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week8.html" class="week-circle" data-index="7" data-title="DOM Events" data-week="08" data-detail="Dynamic Interaction">08</a>
+        </div>
+        <div class="week-item" style="transform: rotate(240deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week9.html" class="week-circle" data-index="8" data-title="API Fetch" data-week="09" data-detail="External Data">09</a>
+        </div>
+        <div class="week-item" style="transform: rotate(270deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week10.html" class="week-circle" data-index="9" data-title="Final Project" data-week="10" data-detail="Architecture">10</a>
+        </div>
+        <div class="week-item" style="transform: rotate(300deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week11.html" class="week-circle" data-index="10" data-title="Bugfixing" data-week="11" data-detail="Code Quality">11</a>
+        </div>
+        <div class="week-item" style="transform: rotate(330deg) translateY(calc(-1 * var(--radius)))">
+          <a href="week12.html" class="week-circle" data-index="11" data-title="Oplevering" data-week="12" data-detail="Final Presentation">12</a>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      #vorigevolgende{
+        gap: 8em;
+      }
+
+      #knop{
+        width: 10em;
+        padding: 1em;
+        justify-content: space-between;
+      }
+    </style>
+
+    <div id="vorigevolgende" class="flex gap-16 mt-4 mb-24 z-[110]">
+      <button id="knop" onclick="navigate(1)" class="px-12 py-5 bg-slate-900 text-white rounded-full font-bold shadow-2xl hover:bg-indigo-600 transition-all active:scale-95 flex items-center gap-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        VORIGE
+      </button>
+      <button id="knop" onclick="navigate(-1)" class="px-12 py-5 bg-slate-900 text-white rounded-full font-bold shadow-2xl hover:bg-indigo-600 transition-all active:scale-95 flex items-center gap-3">
+        VOLGENDE
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </main>
+
+  <footer class="py-20 bg-slate-900 text-white relative">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
+    <div class="max-w-4xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-10">
+      <div>
+        <p class="text-2xl font-black italic uppercase">Matteo De Pooter</p>
+        <p class="text-slate-400">Student Grafische en Digitale Media</p>
+      </div>
+      <a href="https://github.com/MatteoDePooter/Matteo-De-Pooter" target="_blank" class="px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-indigo-500 transition-all shadow-xl">GITHUB REPO</a>
+    </div>
+  </footer>
+
+  <script>
+    const wheel = document.getElementById('wheel');
+    const container = document.getElementById('wheel-container');
+    const circles = document.querySelectorAll('.week-circle');
+    
+    let currentRotation = 0;
+    let isDragging = false;
+    let startX = 0;
+
+    // Navigatie via knoppen
+    function navigate(direction) {
+      rotateTo(currentRotation + (direction * 30));
+    }
+
+    // Algemene rotatie functie
+    function rotateTo(deg) {
+      currentRotation = deg;
+      wheel.style.transform = `rotate(${currentRotation}deg)`;
+      updateActiveState();
+    }
+
+    function updateActiveState() {
+      let activeIndex = Math.round((currentRotation / -30) % 12);
+      if (activeIndex < 0) activeIndex += 12;
+
+      circles.forEach((circle, i) => {
+        const initialAngle = i * 30;
+        circle.style.transform = `rotate(${-initialAngle - currentRotation}deg)`;
+        circle.classList.remove('active');
+        
+        if (i === activeIndex) {
+          circle.classList.add('active');
+          document.getElementById('info-title').innerText = circle.getAttribute('data-title');
+          document.getElementById('info-desc').innerText = "WEEK " + circle.getAttribute('data-week');
+          document.getElementById('info-detail').innerText = circle.getAttribute('data-detail');
+        }
+      });
+    }
+
+    // Slepen logica
+    container.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.pageX;
+      wheel.style.transition = 'none'; // Stop animatie tijdens slepen
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const x = e.pageX;
+      const walk = (x - startX) * 0.2; // Gevoeligheid instellen
+      wheel.style.transform = `rotate(${currentRotation + walk}deg)`;
+      
+      // Update ook de individuele cirkels zodat nummers recht blijven tijdens slepen
+      circles.forEach((circle, i) => {
+        const initialAngle = i * 30;
+        circle.style.transform = `rotate(${-initialAngle - (currentRotation + walk)}deg)`;
+      });
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      const x = e.pageX;
+      const walk = (x - startX) * 0.2;
+      currentRotation += walk;
+      
+      // Snap naar dichtstbijzijnde 30 graden
+      currentRotation = Math.round(currentRotation / 30) * 30;
+      wheel.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+      rotateTo(currentRotation);
+    });
+
+    // Touch support voor mobiel
+    container.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].pageX;
+      wheel.style.transition = 'none';
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const x = e.touches[0].pageX;
+      const walk = (x - startX) * 0.2;
+      wheel.style.transform = `rotate(${currentRotation + walk}deg)`;
+      updateActiveState(); // Optioneel: live update tijdens touch
+    });
+
+    window.addEventListener('touchend', () => {
+      isDragging = false;
+      currentRotation = Math.round(currentRotation / 30) * 30;
+      wheel.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+      rotateTo(currentRotation);
+    });
+
+    // Klikken op een specifieke week
+    circles.forEach(circle => {
+      circle.addEventListener('click', (e) => {
+        const index = parseInt(circle.getAttribute('data-index'));
+        const activeIndex = Math.round((currentRotation / -30) % 12);
+        
+        // Als de week al actief is, laat de link werken. Zo niet, draai er eerst naartoe.
+        if (circle.classList.contains('active')) {
+           // Link wordt gevolgd
+        } else {
+           e.preventDefault();
+           let targetRotation = index * -30;
+           rotateTo(targetRotation);
+        }
+      });
+    });
+
+    // Initialiseer nummers op de juiste plek
+    updateActiveState();
+  </script>
+</body>
+</html>
