@@ -7,6 +7,39 @@
   <link href="dist/output.css" rel="stylesheet">
 </head>
 
+
+<style>
+  /* De container (header) moet relatief zijn om het nummer te positioneren */
+  header {
+    position: relative;
+    overflow: visible; /* Zorg dat het nummer eventueel buiten de header mag steken */
+  }
+
+  .bg-number {
+    position: fixed;
+    /* Kies 'right: 0' voor rechts of 'left: 0' voor links */
+    right: 0; 
+    top: 50%;
+    transform: translateY(-50%);
+    
+    font-size: 20rem; /* Pas dit getal aan voor de grootte */
+    font-weight: 900;
+    line-height: 1;
+    
+    /* Kleur: heel licht grijs/blauw zodat het de tekst niet stoort */
+    color: rgba(30, 41, 59, 0.05); 
+    
+    z-index: -1; /* Achter de tekst */
+    pointer-events: none; /* Je kunt er 'doorheen' klikken */
+    user-select: none; /* Tekst is niet selecteerbaar */
+    font-family: 'Inter', sans-serif;
+  }
+
+  header{
+    z-index: -1;
+  }
+</style>
+
 <body class="bg-slate-50 text-slate-900 min-h-screen font-sans">
 
   <div class="fixed inset-0 -z-10 overflow-hidden">
@@ -14,20 +47,26 @@
     <div class="absolute bottom-[10%] -left-[5%] w-[30%] h-[30%] rounded-full bg-purple-100/50 blur-[100px]"></div>
   </div>
 
-  <nav class="sticky top-0 z-50 bg-white/60 backdrop-blur-xl border-b border-slate-200/50">
-    <div class="max-w-5xl mx-auto px-8 h-20 flex items-center justify-between">
-      <a href="index.html" class="text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-        MATTEO DE POOTER
-      </a>
-      <div class="flex items-center gap-8 text-sm font-bold uppercase tracking-widest">
-        <a href="index.html" class="text-slate-400 hover:text-indigo-600 transition">← Home</a>
-      </div>
+   <nav class="sticky top-0 z-[100] bg-white/60 backdrop-blur-xl border-b border-slate-200/50">
+  <div class="max-w-6xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
+    <a href="index.html" class="flex items-center">
+      <span class="text-lg md:text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent italic">
+        MATTEO <span class="text-indigo-600">DE POOTER</span> <span class="text-slate-400 font-light ml-2 not-italic text-xs md:text-sm">1GDM1</span>
+      </span>
+    </a>
+    <div class="flex items-center gap-6 md:gap-10 text-[10px] md:text-sm font-bold tracking-widest uppercase">
+      <a href="index.html" class="text-slate-400 hover:text-indigo-600 transition">Home</a>
+      <a href="reports.html" class="text-slate-400 hover:text-indigo-600 transition">Reports</a>
     </div>
-  </nav>
+  </div>
+</nav>
 
   <main class="max-w-3xl mx-auto px-8 py-20">
     
     <header class="mb-16">
+      <header class="mb-16">
+        <div class="text-indigo-600 bg-number">01</div>
+      </header>
       <div class="inline-block px-4 py-1 rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-[0.2em] mb-6">
         Week 01
       </div>
@@ -39,27 +78,24 @@
       
       <section class="bg-white/80 p-10 rounded-[2rem] border border-white shadow-sm">
         <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
-          <span class="text-indigo-600">01.</span> Wat heb ik geleerd?
+          <span class="text-indigo-600">01.</span> Wat hebben we gedaan?
         </h2>
         <p class="text-slate-600 leading-relaxed italic">
-          Beschrijf hier kort wat je deze week hebt gedaan. Bijvoorbeeld: de installatie van Node.js, het begrijpen van de mappenstructuur en hoe Tailwind CSS samenwerkt met je HTML-bestanden.
+          We hebben een Webpagina gedownload en aangepast, dit werd dan uiteindelijk deze website. Hiervoor hebben we Visual Studio Code, Github en Netlify gebruikt om dit te laten runnen. 
         </p>
       </section>
 
       <section class="bg-white/80 p-10 rounded-[2rem] border border-white shadow-sm">
         <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
-          <span class="text-purple-600">02.</span> Problemen & Oplossingen
+          <span class="text-purple-600">02.</span> Process
         </h2>
         <div class="space-y-4 text-slate-600 leading-relaxed">
           <p>
-            Ik liep vast bij het uitvoeren van scripts in PowerShell (Execution Policy).
-          </p>
-          <div class="bg-slate-900 text-indigo-300 p-6 rounded-2xl font-mono text-sm">
-             Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+            
+          <div class="bg-slate-900 p-6 rounded-2xl flex flex-col gap-10">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">Website :</h2>
+            <img src="img/Week1.png" alt="Foto van Website Week 1" class="rounded-2xl shadow-lg">
           </div>
-          <p>
-            Door dit commando te gebruiken, kon ik de NPM scripts veilig uitvoeren zonder dat Windows de toegang blokkeerde.
-          </p>
         </div>
       </section>
 
@@ -68,7 +104,7 @@
           <span class="text-pink-600">03.</span> Reflectie
         </h2>
         <p class="text-slate-600 leading-relaxed">
-          In het begin voelde de workflow met de terminal een beetje intimiderend, maar nu ik zie hoe Tailwind de styling automatiseert, begrijp ik de kracht van deze tools. Volgende week wil ik dieper ingaan op de grid-layouts.
+         Ik kon misschien de lay-out wat aanpassen zodat het er wat strakker uit zag.
         </p>
       </section>
 
@@ -84,7 +120,7 @@
   </main>
 
   <footer class="py-12 text-center text-slate-400 text-xs font-bold uppercase tracking-widest">
-    <p>© Matteo De Pooter — 1GDM1 — <a href="https://github.com/MatteoDePooter/Matteo-De-Pooter" class="text-indigo-600 underline">GitHub</a></p>
+    <p>© Matteo De Pooter — 1GDM1 — <a target="_blank" href="https://github.com/MatteoDePooter/Matteo-De-Pooter" class="text-indigo-600 underline">GitHub</a></p>
   </footer>
 
 </body>
