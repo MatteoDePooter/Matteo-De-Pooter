@@ -7,19 +7,26 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root { 
-      /* Standaard straal voor desktop */
-      --radius: 250px; 
+      --radius: 260px; 
+      --circle-size: 70px;
     }
 
-    /* Media Queries voor verschillende schermgroottes */
+    /* Media Queries voor mobiele optimalisatie */
     @media (max-width: 768px) {
-      :root { --radius: 180px; }
-      #info-title { font-size: 1.5rem; }
+      :root { 
+        --radius: 170px; 
+        --circle-size: 55px; 
+      }
+      #info-title { font-size: 1.75rem; }
     }
 
     @media (max-width: 480px) {
-      :root { --radius: 140px; }
+      :root { 
+        --radius: 130px; 
+        --circle-size: 45px; /* Kleiner zodat er minder 'padding' gevoel is */
+      }
       .nav-btn { padding: 0.6rem 1.2rem; font-size: 0.7rem; }
+      #info-title { font-size: 1.4rem; }
     }
 
     html, body {
@@ -46,24 +53,23 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
-      padding-bottom: 2rem;
     }
 
     #wheel-container {
       position: relative;
       width: 100%;
-      height: 400px; /* Vaste hoogte voor stabiliteit */
+      height: 450px;
       flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: grab;
-      touch-action: none; /* Voorkomt scrollen tijdens draaien */
+      touch-action: none;
     }
 
     #wheel {
       position: absolute;
-      top: 100%; /* Zet het middelpunt aan de onderkant van de container */
+      top: 100%;
       width: 0; height: 0;
       transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       user-select: none;
@@ -71,7 +77,7 @@
 
     .center-info {
       position: absolute;
-      top: 65%;
+      top: 60%;
       transform: translateY(-50%);
       text-align: center;
       z-index: 10;
@@ -82,14 +88,13 @@
     .week-item {
       position: absolute;
       left: 0; top: 0;
-      width: 60px; 
-      height: 60px;
-      margin-left: -30px;
-      margin-top: -30px;
+      width: var(--circle-size); 
+      height: var(--circle-size);
+      margin-left: calc(var(--circle-size) / -2);
+      margin-top: calc(var(--circle-size) / -2);
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 100;
     }
 
     .week-circle {
@@ -103,17 +108,17 @@
       font-weight: 800;
       color: #94a3b8;
       transition: all 0.4s;
-      font-size: 1.1rem;
-      cursor: pointer;
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
       text-decoration: none;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      padding: 0; /* Verwijder extra padding */
     }
 
     .week-circle.active {
       border-color: #6366f1;
       background: #6366f1;
       color: white;
-      transform: scale(1.25);
+      transform: scale(1.2);
       box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
     }
 
@@ -121,7 +126,7 @@
       display: flex;
       justify-content: center;
       gap: 1rem;
-      margin-top: 1rem;
+      margin-bottom: 2rem;
       z-index: 60;
     }
 
@@ -133,38 +138,36 @@
       font-weight: 700;
       font-size: 0.8rem;
       transition: 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-
-    .nav-btn:active { transform: scale(0.95); }
 
     #cardGrid {
       display: flex;
       gap: 2rem;
-      padding: 4rem 5vw;
+      padding: 2rem 5vw 4rem 5vw;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
-      background-color: white;
     }
     #cardGrid::-webkit-scrollbar { display: none; }
 
+    /* Animatie klasse voor scrollen */
     .report-card {
       min-width: 280px;
       scroll-snap-align: center;
-      background: #f8fafc;
+      background: white;
       border-radius: 2rem;
       padding: 2.5rem;
       position: relative;
-      overflow: hidden;
       border: 1px solid #e2e8f0;
       text-decoration: none;
-      transition: 0.4s;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease-out;
     }
 
-    .report-card:hover {
-      transform: translateY(-10px);
-      border-color: #6366f1;
+    .report-card.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .bg-number-card {
@@ -172,9 +175,8 @@
       right: -5px; bottom: -10px;
       font-size: 6rem;
       font-weight: 900;
-      color: rgba(99, 102, 241, 0.05);
+      color: rgba(99, 102, 241, 0.04);
       z-index: 0;
-      font-style: italic;
     }
   </style>
 </head>
@@ -184,11 +186,11 @@
     <nav>
       <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
         <a href="index.html" class="flex items-center">
-          <span class="text-lg md:text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent italic">
+          <span class="text-lg font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent italic">
             MATTEO <span class="text-indigo-600">DE POOTER</span>
           </span>
         </a>
-        <div class="flex items-center gap-4 md:gap-10 text-[10px] md:text-sm font-bold tracking-widest uppercase">
+        <div class="flex items-center gap-4 text-[10px] md:text-sm font-bold tracking-widest uppercase">
           <a href="index.html" class="text-indigo-600 border-b-2 border-indigo-600 pb-1">Home</a>
           <a href="reports.html" class="text-slate-400 hover:text-indigo-600 transition">Reports</a>
         </div>
@@ -196,7 +198,7 @@
     </nav>
 
   <div class="hero-fold">
-    <header class="pt-10 text-center shrink-0">
+    <header class="pt-10 text-center">
       <h1 class="text-4xl md:text-6xl font-black uppercase leading-tight">
         Weekly<br><span class="bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent">Journal.</span>
       </h1>
@@ -204,8 +206,8 @@
 
     <div id="wheel-container">
       <div class="center-info">
-        <span id="info-desc" class="text-indigo-600 font-black tracking-widest text-xs md:text-sm uppercase">Week 01</span>
-        <h3 id="info-title" class="text-2xl md:text-4xl font-black text-slate-900 px-4">De Opstart</h3>
+        <span id="info-desc" class="text-indigo-600 font-black tracking-widest text-xs uppercase">Week 01</span>
+        <h3 id="info-title" class="text-2xl font-black text-slate-900">De Opstart</h3>
       </div>
       <div id="wheel"></div>
     </div>
@@ -216,15 +218,11 @@
     </div>
   </div>
 
-  <section class="py-20">
-    <div class="text-center mb-10">
-      <h2 class="text-2xl font-black text-slate-800 uppercase tracking-widest">Overzicht</h2>
-      <div class="h-1 w-20 bg-indigo-600 mx-auto mt-2"></div>
-    </div>
+  <section class="bg-slate-50 border-t border-slate-100">
     <div id="cardGrid"></div>
   </section>
 
-  <footer class="py-12 text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest border-t border-slate-100">
+  <footer class="py-12 text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest">
     <p>© Matteo De Pooter — 1GDM1 — <a target="_blank" href="https://github.com/MatteoDePooter/Matteo-De-Pooter" class="text-indigo-600 underline">GitHub</a></p>
   </footer>
 
@@ -258,9 +256,20 @@
           <div class="bg-number-card">${r.w}</div>
           <span class="text-3xl font-black text-indigo-600/20 italic">${r.w}</span>
           <h3 class="text-xl font-bold mt-2 text-slate-800">${r.t}</h3>
-          <p class="text-slate-400 text-xs mt-1 uppercase tracking-wider">${r.d}</p>
+          <p class="text-slate-400 text-xs mt-1 uppercase tracking-widest">${r.d}</p>
         </a>`;
     });
+
+    // Scroll Animatie (Intersection Observer)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.report-card').forEach(card => observer.observe(card));
 
     let currentRotation = 0;
     const circles = document.querySelectorAll('.week-circle');
@@ -283,29 +292,23 @@
           document.getElementById('info-desc').innerText = "WEEK " + reports[activeIndex].w;
           
           const cards = document.querySelectorAll('.report-card');
-          cardGrid.scrollTo({ left: cards[activeIndex].offsetLeft - (window.innerWidth / 4), behavior: 'smooth' });
+          cardGrid.scrollTo({ left: cards[activeIndex].offsetLeft - 40, behavior: 'smooth' });
         }
       });
     }
 
-    // Drag & Touch Logic
-    let isDragging = false; 
-    let startX = 0;
+    // Touch & Mouse Handlers
+    let isDragging = false; let startX = 0;
+    const container = document.getElementById('wheel-container');
 
-    const handleStart = (x) => {
-      isDragging = true;
-      startX = x;
-      wheel.style.transition = 'none';
-    };
-
-    const handleMove = (x) => {
+    const start = (x) => { isDragging = true; startX = x; wheel.style.transition = 'none'; };
+    const move = (x) => {
       if (!isDragging) return;
-      const move = (x - startX) * 0.3;
-      wheel.style.transform = `rotate(${currentRotation + move}deg)`;
-      circles.forEach((c, i) => c.style.transform = `rotate(${- (i * 30) - (currentRotation + move)}deg)`);
+      const shift = (x - startX) * 0.3;
+      wheel.style.transform = `rotate(${currentRotation + shift}deg)`;
+      circles.forEach((c, i) => c.style.transform = `rotate(${- (i * 30) - (currentRotation + shift)}deg)`);
     };
-
-    const handleEnd = (x) => {
+    const end = (x) => {
       if (!isDragging) return;
       isDragging = false;
       wheel.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
@@ -313,19 +316,14 @@
       rotateTo(currentRotation);
     };
 
-    // Mouse Events
-    container = document.getElementById('wheel-container');
-    container.onmousedown = (e) => handleStart(e.pageX);
-    window.onmousemove = (e) => handleMove(e.pageX);
-    window.onmouseup = (e) => handleEnd(e.pageX);
-
-    // Touch Events (Mobile)
-    container.ontouchstart = (e) => handleStart(e.touches[0].pageX);
-    container.ontouchmove = (e) => handleMove(e.touches[0].pageX);
-    container.ontouchend = (e) => handleEnd(e.changedTouches[0].pageX);
+    container.onmousedown = (e) => start(e.pageX);
+    window.onmousemove = (e) => move(e.pageX);
+    window.onmouseup = (e) => end(e.pageX);
+    container.ontouchstart = (e) => start(e.touches[0].pageX);
+    container.ontouchmove = (e) => move(e.touches[0].pageX);
+    container.ontouchend = (e) => end(e.changedTouches[0].pageX);
 
     rotateTo(0);
   </script>
-
 </body>
 </html>
