@@ -7,18 +7,29 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root { 
-      --radius: clamp(160px, 25vh, 280px); 
+      /* Standaard straal voor desktop */
+      --radius: 250px; 
+    }
+
+    /* Media Queries voor verschillende schermgroottes */
+    @media (max-width: 768px) {
+      :root { --radius: 180px; }
+      #info-title { font-size: 1.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      :root { --radius: 140px; }
+      .nav-btn { padding: 0.6rem 1.2rem; font-size: 0.7rem; }
     }
 
     html, body {
-      height: auto; /* Aangepast voor scrollen */
       margin: 0;
       padding: 0;
       overflow-x: hidden;
       background-color: #f8fafc;
+      scroll-behavior: smooth;
     }
 
-    /* Navigatie altijd zichtbaar maken */
     nav {
       position: sticky !important;
       top: 0;
@@ -30,27 +41,29 @@
     }
 
     .hero-fold {
-      height: 85vh;
+      min-height: 90vh;
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      padding-bottom: 2rem;
     }
 
     #wheel-container {
       position: relative;
       width: 100%;
+      height: 400px; /* Vaste hoogte voor stabiliteit */
       flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: grab;
-      touch-action: none;
+      touch-action: none; /* Voorkomt scrollen tijdens draaien */
     }
 
     #wheel {
       position: absolute;
-      top: 90%; 
+      top: 100%; /* Zet het middelpunt aan de onderkant van de container */
       width: 0; height: 0;
       transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       user-select: none;
@@ -58,30 +71,21 @@
 
     .center-info {
       position: absolute;
-      top: 70%;
+      top: 65%;
       transform: translateY(-50%);
       text-align: center;
-      z-index: 10; /* Lager dan de klikbare items */
-      width: 80%;
-      max-width: 250px;
-      pointer-events: none; /* Klikken gaat door de tekst naar het wiel */
-    }
-
-    #info-title {
-      font-size: clamp(1.5rem, 4vw, 2rem); 
-      font-weight: 800;
-      line-height: 1.1;
-      word-wrap: break-word;
-      margin: 0 auto;
+      z-index: 10;
+      width: 90%;
+      pointer-events: none;
     }
 
     .week-item {
       position: absolute;
       left: 0; top: 0;
-      width: clamp(50px, 8vh, 70px); 
-      height: clamp(50px, 8vh, 70px);
-      margin-left: calc(clamp(50px, 8vh, 70px) / -2);
-      margin-top: calc(clamp(50px, 8vh, 70px) / -2);
+      width: 60px; 
+      height: 60px;
+      margin-left: -30px;
+      margin-top: -30px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -99,32 +103,26 @@
       font-weight: 800;
       color: #94a3b8;
       transition: all 0.4s;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      text-decoration: none; /* Voor de <a> tag */
+      text-decoration: none;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
 
     .week-circle.active {
       border-color: #6366f1;
       background: #6366f1;
       color: white;
-      transform: scale(1.2);
+      transform: scale(1.25);
       box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
     }
 
     #vorigevolgende {
       display: flex;
       justify-content: center;
-      gap: 2rem;
-      padding-bottom: 2em;
+      gap: 1rem;
+      margin-top: 1rem;
       z-index: 60;
-      position: sticky;
-    }
-
-     .report-card:hover {
-      transform: translateY(-12px);
-      border-color: #6366f1;
-      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.15);
     }
 
     .nav-btn {
@@ -135,37 +133,46 @@
       font-weight: 700;
       font-size: 0.8rem;
       transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
+
+    .nav-btn:active { transform: scale(0.95); }
 
     #cardGrid {
       display: flex;
       gap: 2rem;
-      padding: 4rem 10vw;
+      padding: 4rem 5vw;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
+      background-color: white;
     }
     #cardGrid::-webkit-scrollbar { display: none; }
 
     .report-card {
-      min-width: 300px;
+      min-width: 280px;
       scroll-snap-align: center;
-      background: white;
+      background: #f8fafc;
       border-radius: 2rem;
       padding: 2.5rem;
       position: relative;
       overflow: hidden;
       border: 1px solid #e2e8f0;
       text-decoration: none;
-      color: inherit;
+      transition: 0.4s;
+    }
+
+    .report-card:hover {
+      transform: translateY(-10px);
+      border-color: #6366f1;
     }
 
     .bg-number-card {
       position: absolute;
       right: -5px; bottom: -10px;
-      font-size: 8rem;
+      font-size: 6rem;
       font-weight: 900;
-      color: rgba(99, 102, 241, 0.04);
+      color: rgba(99, 102, 241, 0.05);
       z-index: 0;
       font-style: italic;
     }
@@ -174,14 +181,14 @@
 
 <body>
 
-    <nav class="sticky top-0 z-[100] bg-white/60 backdrop-blur-xl border-b border-slate-200/50">
-      <div class="max-w-6xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
+    <nav>
+      <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
         <a href="index.html" class="flex items-center">
-          <span class="text-lg md:text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600    to-purple-600 bg-clip-text text-transparent italic">
-            MATTEO <span class="text-indigo-600">DE POOTER</span> <span class="text-slate-400     font-light ml-2 not-italic text-xs md:text-sm">1GDM1</span>
+          <span class="text-lg md:text-xl font-black tracking-tighter bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent italic">
+            MATTEO <span class="text-indigo-600">DE POOTER</span>
           </span>
         </a>
-        <div class="flex items-center gap-6 md:gap-10 text-[10px] md:text-sm font-bold tracking-widest    uppercase">
+        <div class="flex items-center gap-4 md:gap-10 text-[10px] md:text-sm font-bold tracking-widest uppercase">
           <a href="index.html" class="text-indigo-600 border-b-2 border-indigo-600 pb-1">Home</a>
           <a href="reports.html" class="text-slate-400 hover:text-indigo-600 transition">Reports</a>
         </div>
@@ -189,16 +196,16 @@
     </nav>
 
   <div class="hero-fold">
-    <header class="pt-6 text-center shrink-0">
-      <h1 class="text-4xl md:text-5xl font-black uppercase leading-tight">
+    <header class="pt-10 text-center shrink-0">
+      <h1 class="text-4xl md:text-6xl font-black uppercase leading-tight">
         Weekly<br><span class="bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent">Journal.</span>
       </h1>
     </header>
 
     <div id="wheel-container">
       <div class="center-info">
-        <span id="info-desc" class="text-indigo-600 font-black tracking-widest text-sm uppercase">Week 01</span>
-        <h3 id="info-title" class="text-3xl font-black text-slate-900">De Opstart</h3>
+        <span id="info-desc" class="text-indigo-600 font-black tracking-widest text-xs md:text-sm uppercase">Week 01</span>
+        <h3 id="info-title" class="text-2xl md:text-4xl font-black text-slate-900 px-4">De Opstart</h3>
       </div>
       <div id="wheel"></div>
     </div>
@@ -209,9 +216,17 @@
     </div>
   </div>
 
-  <section class="bg-white">
+  <section class="py-20">
+    <div class="text-center mb-10">
+      <h2 class="text-2xl font-black text-slate-800 uppercase tracking-widest">Overzicht</h2>
+      <div class="h-1 w-20 bg-indigo-600 mx-auto mt-2"></div>
+    </div>
     <div id="cardGrid"></div>
   </section>
+
+  <footer class="py-12 text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest border-t border-slate-100">
+    <p>© Matteo De Pooter — 1GDM1 — <a target="_blank" href="https://github.com/MatteoDePooter/Matteo-De-Pooter" class="text-indigo-600 underline">GitHub</a></p>
+  </footer>
 
   <script>
     const reports = [
@@ -233,7 +248,6 @@
     const cardGrid = document.getElementById('cardGrid');
     
     reports.forEach((r, i) => {
-      // Wiel items veranderd naar <a> tags om klikbaar te maken
       wheel.innerHTML += `
         <div class="week-item" style="transform: rotate(${i * 30}deg) translateY(calc(-1 * var(--radius)))">
           <a href="${r.l}" class="week-circle ${i===0?'active':''}" data-index="${i}">${r.w}</a>
@@ -242,9 +256,9 @@
       cardGrid.innerHTML += `
         <a href="${r.l}" class="report-card group">
           <div class="bg-number-card">${r.w}</div>
-          <span class="text-4xl font-black text-indigo-600/20 italic">${r.w}</span>
-          <h3 class="text-xl font-bold mt-4">${r.t}</h3>
-          <p class="text-slate-400 text-xs mt-1">${r.d}</p>
+          <span class="text-3xl font-black text-indigo-600/20 italic">${r.w}</span>
+          <h3 class="text-xl font-bold mt-2 text-slate-800">${r.t}</h3>
+          <p class="text-slate-400 text-xs mt-1 uppercase tracking-wider">${r.d}</p>
         </a>`;
     });
 
@@ -269,36 +283,49 @@
           document.getElementById('info-desc').innerText = "WEEK " + reports[activeIndex].w;
           
           const cards = document.querySelectorAll('.report-card');
-          cardGrid.scrollTo({ left: cards[activeIndex].offsetLeft - 100, behavior: 'smooth' });
+          cardGrid.scrollTo({ left: cards[activeIndex].offsetLeft - (window.innerWidth / 4), behavior: 'smooth' });
         }
       });
     }
 
-    // Dragging logica
-    let isDragging = false; let startX = 0;
-    const container = document.getElementById('wheel-container');
+    // Drag & Touch Logic
+    let isDragging = false; 
+    let startX = 0;
 
-    container.onmousedown = (e) => { isDragging = true; startX = e.pageX; wheel.style.transition = 'none'; };
-    window.onmousemove = (e) => {
+    const handleStart = (x) => {
+      isDragging = true;
+      startX = x;
+      wheel.style.transition = 'none';
+    };
+
+    const handleMove = (x) => {
       if (!isDragging) return;
-      const move = (e.pageX - startX) * 0.4;
+      const move = (x - startX) * 0.3;
       wheel.style.transform = `rotate(${currentRotation + move}deg)`;
       circles.forEach((c, i) => c.style.transform = `rotate(${- (i * 30) - (currentRotation + move)}deg)`);
     };
-    window.onmouseup = (e) => {
+
+    const handleEnd = (x) => {
       if (!isDragging) return;
       isDragging = false;
       wheel.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-      currentRotation = Math.round((currentRotation + (e.pageX - startX) * 0.4) / 30) * 30;
+      currentRotation = Math.round((currentRotation + (x - startX) * 0.3) / 30) * 30;
       rotateTo(currentRotation);
     };
 
+    // Mouse Events
+    container = document.getElementById('wheel-container');
+    container.onmousedown = (e) => handleStart(e.pageX);
+    window.onmousemove = (e) => handleMove(e.pageX);
+    window.onmouseup = (e) => handleEnd(e.pageX);
+
+    // Touch Events (Mobile)
+    container.ontouchstart = (e) => handleStart(e.touches[0].pageX);
+    container.ontouchmove = (e) => handleMove(e.touches[0].pageX);
+    container.ontouchend = (e) => handleEnd(e.changedTouches[0].pageX);
+
     rotateTo(0);
   </script>
-
-  <footer class="py-12 text-center text-slate-400 text-xs font-bold uppercase tracking-widest bg-white">
-    <p>© Matteo De Pooter — 1GDM1 — <a target="_blank" href="https://github.com/MatteoDePooter/Matteo-De-Pooter" class="text-indigo-600 underline">GitHub</a></p>
-  </footer>
 
 </body>
 </html>
