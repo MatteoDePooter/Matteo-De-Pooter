@@ -11,28 +11,40 @@
       --circle-size: 70px;
     }
 
-    /* MEDIA QUERIES VOOR TELEFOON (Mobiel) */
-    @media (max-width: 768px) {
-      :root { 
-        --radius: 145px; 
-        --circle-size: 50px;
-        --info-bottom: 230px; 
-      }
-      
-      #info-title {
-        font-size: 1.6rem !important;
-        width: 100%;
-        padding: 0 15px;
-      }
+    /* VERBETERDE MEDIA QUERIES VOOR MOBIEL */
+@media (max-width: 768px) {
+  :root { 
+    --radius: 130px;      /* Iets kleiner zodat het niet buiten het scherm valt */
+    --circle-size: 45px;  /* Cirkels iets kleiner voor meer ademruimte */
+  }
+  
+  #info-title {
+    font-size: 1.4rem !important; /* Tekst iets compacter */
+    line-height: 1.2;
+  }
 
-      .hero-fold {
-        height: 60vh !important;
-      }
+  .hero-fold {
+    height: 70vh !important; /* Iets minder hoog zodat de knoppen zichtbaar blijven */
+    min-height: 550px;
+  }
 
-      .center-info {
-        bottom: var(--info-bottom) !important;
-      }
-    }
+  .center-info {
+    /* Positioneer de tekst precies in het midden van de cirkel-boog */
+    top: auto !important;
+    bottom: 120px !important; 
+    transform: none !important;
+    width: 100%;
+  }
+
+  #wheel-container {
+    height: 350px; /* Container minder hoog maken */
+  }
+
+  #wheel {
+    /* Zorg dat het draaipunt van het wiel goed staat t.o.v. de tekst */
+    top: 90%; 
+  }
+}
 
     html, body {
       margin: 0;
@@ -81,14 +93,15 @@
     }
 
     .center-info {
-      position: absolute;
-      top: 60%;
-      transform: translateY(-50%);
-      text-align: center;
-      z-index: 10;
-      width: 90%;
-      pointer-events: none;
-    }
+  position: absolute;
+  top: 60%;
+  left: 50%; /* Toevoegen */
+  transform: translate(-50%, -50%); /* Aanpassen */
+  text-align: center;
+  z-index: 10;
+  width: 90%;
+  pointer-events: none;
+}
 
     .week-item {
       position: absolute;
